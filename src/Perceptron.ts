@@ -1,9 +1,10 @@
 import { random } from "./utils/random";
 
 export class Perceptron {
-  private weights = new Array(3);
-  private learningRate = 0.1;
-  constructor() {
+  private weights: number[];
+  private learningRate = 0.01;
+  constructor(n: number) {
+    this.weights = new Array(n);
     for (let i = 0; i < this.weights.length; i++) {
       this.weights[i] = random(-1, 1);
     }

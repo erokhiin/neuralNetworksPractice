@@ -10,10 +10,11 @@ const COLOR_ERROR = "#cf3030";
 const COLOR_SUCCESS = "#2ad55a";
 
 // Line function
-export const f: (x: number) => number = (x) => 6* x + 2;
+export const f: (x: number) => number = (x) => 6 * x + 2;
+const BIAS = 1;
 export const canvas = new Canvas(WIDTH, HEIGTH);
 const points: Point[] = new Array(200);
-const brain = new Perceptron();
+const brain = new Perceptron(3);
 let trainingIndex = 0;
 const p1 = new Point(-1, f(-1));
 const p2 = new Point(1, f(1));
@@ -32,7 +33,7 @@ loop(() => {
   }
 
   for (let point of points) {
-    const inputs = [1, point.x, point.y];
+    const inputs = [point.x, point.y, BIAS];
     const target = point.label;
     const guess = brain.guess(inputs);
     let color: string;
@@ -42,7 +43,7 @@ loop(() => {
   }
 
   const training = points[trainingIndex];
-  const inputs = [1, training.pixelX(), training.pixelY()];
+  const inputs = [training.x, training.y, BIAS];
   const target = training.label;
   brain.train(inputs, target);
   trainingIndex++;
