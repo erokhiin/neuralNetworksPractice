@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "s": "parcel src/index.html"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {}
+}
