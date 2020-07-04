@@ -14,17 +14,17 @@ export class Canvas {
     this.canvas = document.querySelector("canvas");
     this.canvas.width = width;
     this.canvas.height = height;
-    this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+    this.ctx = this.canvas.getContext("2d");
   }
-  drawPoint(p: Point, color: string, size: number = 6) {
+
+  drawPoint(p: Point, color: string, size: number = 6, stroke?: boolean) {
     this.ctx.fillStyle = color;
     this.ctx.beginPath();
     this.ctx.arc(p.x, p.y, size, 0, 2 * Math.PI, true);
     this.ctx.fill();
+    if (stroke) this.ctx.stroke();
   }
   drawLine(start: Point, end: Point) {
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = "hsl(250, 0%, 42%)";
     this.ctx.beginPath();
     this.ctx.moveTo(start.x, start.y);
     this.ctx.lineTo(end.x, end.y);
