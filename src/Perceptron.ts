@@ -2,8 +2,9 @@ import { random } from "./utils/random";
 
 export class Perceptron {
   private weights: number[];
-  private learningRate = 0.01;
-  constructor(n: number) {
+  private learningRate: number;
+  constructor(n: number, lerningRate: number) {
+    this.learningRate = lerningRate;
     this.weights = new Array(n);
     for (let i = 0; i < this.weights.length; i++) {
       this.weights[i] = random(-1, 1);
@@ -20,6 +21,10 @@ export class Perceptron {
     }
     let output = this.sign(sum);
     return output;
+  }
+  guessY(x: number) {
+    const w = this.weights;
+    return -(w[2] / w[1]) - (w[0] / w[1]) * x;
   }
   train(inputs: number[], target: number) {
     const guess = this.guess(inputs);
