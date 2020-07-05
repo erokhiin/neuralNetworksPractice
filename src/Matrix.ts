@@ -36,11 +36,18 @@ export class Matrix {
           row.reduce((acc, e, j) => e * n.matrix[j][i] + acc, 0)
         )
       );
-      this.matrix = result.matrix;
+      return result;
     } else {
       this.matrix = this.mapMatrix((element) => element * n);
     }
   }
+
+  transpose() {
+    const result = new Matrix(this.columns, this.rows);
+    this.mapMatrix((e, i, j) => (result.matrix[j][i] = e));
+    return result;
+  }
+
   randomize() {
     this.matrix = this.mapMatrix(() => ~~random(0, 10));
   }

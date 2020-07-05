@@ -28,6 +28,8 @@ console.table(m.matrix)
 console.table(b.matrix)
 m.multiply(b)
 console.table(m.matrix)
+console.table(m.transpose().matrix)
+
 
 for (let i = 0; i < points.length; i++) {
   points[i] = new Point();
