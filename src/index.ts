@@ -21,15 +21,9 @@ let count = 0;
 const p1 = new Point(-1, f(-1));
 const p2 = new Point(1, f(1));
 
-const m = new Matrix(2, 3)
-const b = new Matrix(3, 2)
-m.randomize(); b.randomize()
-console.table(m.matrix)
-console.table(b.matrix)
-m.multiply(b)
-console.table(m.matrix)
-console.table(m.transpose().matrix)
-
+const m1 = new Matrix(2, 3).randomize().print();
+const m2 = new Matrix(3, 2).randomize().print();
+Matrix.multiply(m1, m2).print();
 
 for (let i = 0; i < points.length; i++) {
   points[i] = new Point();
