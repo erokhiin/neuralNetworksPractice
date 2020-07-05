@@ -2,6 +2,7 @@ import { Perceptron } from "./Perceptron";
 import { Canvas } from "./Canvas";
 import { loop } from "./utils/loop";
 import { Point } from "./Point";
+import { Matrix } from "./Matrix";
 
 const WIDTH = 500;
 const HEIGTH = 500;
@@ -15,15 +16,22 @@ const BIAS = 1;
 export const canvas = new Canvas(WIDTH, HEIGTH);
 const points: Point[] = new Array(200);
 const brain = new Perceptron(3, 0.005);
-let count = 0;
 
+let count = 0;
 const p1 = new Point(-1, f(-1));
 const p2 = new Point(1, f(1));
+
+const m = new Matrix(2, 3)
+const b = new Matrix(2, 3)
+m.randomize(); b.add(2)
+console.table(b.matrix)
+console.table(m.matrix)
+m.add(b)
+console.table(m.matrix)
 
 for (let i = 0; i < points.length; i++) {
   points[i] = new Point();
 }
-
 loop(() => {
   canvas.clear();
 
