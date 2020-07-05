@@ -22,11 +22,11 @@ const p1 = new Point(-1, f(-1));
 const p2 = new Point(1, f(1));
 
 const m = new Matrix(2, 3)
-const b = new Matrix(2, 3)
-m.randomize(); b.add(2)
-console.table(b.matrix)
+const b = new Matrix(3, 2)
+m.randomize(); b.randomize()
 console.table(m.matrix)
-m.add(b)
+console.table(b.matrix)
+m.multiply(b)
 console.table(m.matrix)
 
 for (let i = 0; i < points.length; i++) {

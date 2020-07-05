@@ -16,10 +16,10 @@ export class Matrix {
       }
     }
   }
+
   mapMatrix(callback: (e: number, i: number, j: number) => number) {
     return this.matrix.map((row, i) => row.map((e, j) => callback(e, i, j)));
   }
-
   add(n: number | Matrix) {
     if (n instanceof Matrix) {
       this.matrix = this.mapMatrix((element, i, j) => element + n.matrix[i][j]);
@@ -28,7 +28,18 @@ export class Matrix {
     }
   }
   multiply(n: number | Matrix) {
-    this.matrix = this.mapMatrix((element) => element * n);
+    if (n instanceof Matrix) {
+      if (this.columns !== n.rows) return;
+      const result = new Matrix(this.rows, n.columns);
+      result.matrix = result.matrix.map((_, i) =>
+        this.matrix.map((row) =>
+          row.reduce((acc, e, j) => e * n.matrix[j][i] + acc, 0)
+        )
+      );
+      this.matrix = result.matrix;
+    } else {
+      this.matrix = this.mapMatrix((element) => element * n);
+    }
   }
   randomize() {
     this.matrix = this.mapMatrix(() => ~~random(0, 10));
