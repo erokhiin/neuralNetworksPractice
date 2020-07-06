@@ -1,7 +1,7 @@
-import { random } from "./utils/random";
-import { Canvas } from "./Canvas";
-import { f, canvas } from ".";
-import { map } from "./utils/map";
+import { random } from "../utils/random";
+import { Canvas } from "../utils/Canvas";
+import { f, canvas } from "./perceptronModule";
+import { map } from "../utils/map";
 
 const COLOR_A = "white";
 const COLOR_B = "black";

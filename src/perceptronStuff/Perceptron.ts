@@ -1,4 +1,4 @@
-import { random } from "./utils/random";
+import { random } from "../utils/random";
 
 export class Perceptron {
   private weights: number[];

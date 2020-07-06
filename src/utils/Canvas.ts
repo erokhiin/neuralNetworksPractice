@@ -8,10 +8,10 @@ export class Canvas {
   width: number;
   height: number;
 
-  constructor(width: number, height: number) {
+  constructor(canvas: HTMLCanvasElement ,width: number, height: number) {
     this.width = width;
     this.height = height;
-    this.canvas = document.querySelector("canvas");
+    this.canvas = canvas;
     this.canvas.width = width;
     this.canvas.height = height;
     this.ctx = this.canvas.getContext("2d");
