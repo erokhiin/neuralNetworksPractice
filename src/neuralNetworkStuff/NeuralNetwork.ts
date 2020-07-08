@@ -4,33 +4,51 @@ export class NeuralNetwork {
   inputNodes: number;
   hiddenNodes: number;
   outputNodes: number;
-  weightsIH: Matrix;
-  weightsHO: Matrix;
-  biasH: Matrix;
-  biasO: Matrix;
+  hiddenWeights: Matrix;
+  outputWeights: Matrix;
+  hiddenBias: Matrix;
+  outputBias: Matrix;
+
   constructor(inputNodes: number, hiddenNodes: number, outputNodes: number) {
     this.inputNodes = inputNodes;
     this.hiddenNodes = hiddenNodes;
     this.outputNodes = outputNodes;
 
-    this.weightsIH = new Matrix(this.hiddenNodes, this.inputNodes).randomize();
-    this.weightsHO = new Matrix(this.outputNodes, this.hiddenNodes).randomize();
+    this.hiddenWeights = new Matrix(
+      this.hiddenNodes,
+      this.inputNodes
+    ).randomize();
+    this.outputWeights = new Matrix(
+      this.outputNodes,
+      this.hiddenNodes
+    ).randomize();
 
-    this.biasH = new Matrix(this.hiddenNodes, 1).randomize();
-    this.biasO = new Matrix(this.outputNodes, 1).randomize();
+    this.hiddenBias = new Matrix(this.hiddenNodes, 1).randomize();
+    this.outputBias = new Matrix(this.outputNodes, 1).randomize();
   }
 
   feedforward(input: Matrix) {
-    let hidden = Matrix.add(
-      Matrix.multiply(this.weightsIH, input),
-      this.biasH
+    let hiddenLayer = Matrix.add(
+      Matrix.multiply(this.hiddenWeights, input),
+      this.hiddenBias
     ).forEach(sigmoid);
 
-    let output = Matrix.add(
-      Matrix.multiply(this.weightsHO, hidden),
-      this.biasO
-    ).forEach(sigmoid).print();
-    
-    return output;
+    let outputLayer = Matrix.add(
+      Matrix.multiply(this.outputWeights, hiddenLayer),
+      this.outputBias
+    ).forEach(sigmoid);
+
+    return outputLayer;
+  }
+
+  train(inputs: Matrix, targets: Matrix) {
+    let outputs = this.feedforward(inputs);
+    let outputErrors = Matrix.subtract(targets, outputs);
+    let hiddenErrors = Matrix.multiply(
+      Matrix.transpose(this.outputWeights),
+      outputErrors
+    );
+    hiddenErrors.print()
+
   }
 }
