@@ -42,9 +42,9 @@ export class Matrix {
     return this;
   }
 
-  transpose() {
-    const result = new Matrix(this.columns, this.rows);
-    this.map((e, i, j) => (result.data[j][i] = e));
+  static transpose(matrix: Matrix) {
+    const result = new Matrix(matrix.columns, matrix.rows);
+    result.forEach((_, i, j) => (matrix.data[j][i]));
     return result;
   }
 
