@@ -1,4 +1,5 @@
 import { random } from "../utils/random";
+import { flatMap } from "../utils/map";
 
 export class Matrix {
   rows: number;
@@ -26,6 +27,14 @@ export class Matrix {
   }
   add(n: number) {
     this.data = this.map((element) => element + n);
+    return this;
+  }
+
+  static subtract(a: Matrix, b: Matrix) {
+    return Matrix.add(a, b.multiply(-1));
+  }
+  subtract(n: number) {
+    this.add(n * -1);
     return this;
   }
 
@@ -62,5 +71,8 @@ export class Matrix {
     let m = new Matrix(data.length, data[0].length);
     m.data = m.map((_, i, j) => data[i][j]);
     return m;
+  }
+  toArray() {
+    return flatMap(this.data, (e) => e);
   }
 }

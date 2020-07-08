@@ -22,3 +22,7 @@ export const map: (
     return constrain(newval, stop2, start2);
   }
 };
+
+export function flatMap<T, U>(array: T[], callbackfn: (value: T, index: number, array: T[]) => U[]): U[] {
+  return Array.prototype.concat(...array.map(callbackfn));
+}
