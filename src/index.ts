@@ -1,5 +1,5 @@
-import { perceptronModule } from "./perceptronStuff/perceptronModule";
-import { neuralNetworkModule } from "./neuralNetworkStuff/neuralNetworkModule";
+import { linearClasifierModule } from "./modules/linearClasifierModule";
+import { xorModule } from "./modules/xorModule";
 
-// perceptronModule();
-neuralNetworkModule();
+linearClasifierModule();
+xorModule();

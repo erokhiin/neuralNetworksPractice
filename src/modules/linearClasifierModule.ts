@@ -1,7 +1,7 @@
-import { Perceptron } from "./Perceptron";
+import { Perceptron } from "../library/Perceptron";
 import { Canvas } from "../utils/Canvas";
 import { loop } from "../utils/loop";
-import { Point } from "./Point";
+import { Point } from "../utils/Point";
 
 const WIDTH = 500;
 const HEIGTH = 500;
@@ -25,7 +25,8 @@ const brain = new Perceptron(3, 0.005);
 const p1 = new Point(-1, f(-1));
 const p2 = new Point(1, f(1));
 let count = 0;
-export const perceptronModule = () => {
+
+export const linearClasifierModule = () => {
   loop(() => {
     canvas.clear();
 

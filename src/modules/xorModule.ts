@@ -1,8 +1,18 @@
-import { NeuralNetwork } from "./NeuralNetwork";
-import { Matrix } from "./Matrix";
+import { NeuralNetwork } from "../library/NeuralNetwork";
+import { Matrix } from "../library/Matrix";
 import { getRandomInt } from "../utils/random";
+import { loop } from "../utils/loop";
+import { Canvas } from "../utils/Canvas";
 
-export const neuralNetworkModule = () => {
+const WIDTH = 500;
+const HEIGTH = 500;
+
+export const canvas = new Canvas(
+  document.querySelector("#neuralNetwork"),
+  WIDTH,
+  HEIGTH
+);
+export const xorModule = () => {
   const nn = new NeuralNetwork(2, 2, 1);
 
   let trainingData = [
@@ -12,13 +22,10 @@ export const neuralNetworkModule = () => {
     { inputs: Matrix.fromRaw([[1], [1]]), targets: Matrix.fromRaw([[0]]) },
   ];
 
-  for (let i = 0; i < 50000; i++) {
+  loop(() => {
+    canvas.clear();
+
     const data = trainingData[getRandomInt(0, 3)];
     nn.train(data.inputs, data.targets);
-  }
-
-  nn.feedforward(trainingData[0].inputs).print();
-  nn.feedforward(trainingData[1].inputs).print();
-  nn.feedforward(trainingData[2].inputs).print();
-  nn.feedforward(trainingData[3].inputs).print();
+  });
 };
