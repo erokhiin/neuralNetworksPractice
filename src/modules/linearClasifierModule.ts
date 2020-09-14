@@ -19,11 +19,11 @@ export const canvas = new Canvas(
 export const f: (x: number) => number = (x) => 0.89 * x + 0.2;
 const points: Point[] = new Array(200);
 for (let i = 0; i < points.length; i++) {
-  points[i] = new Point();
+  points[i] = new Point(f, canvas);
 }
 const brain = new Perceptron(3, 0.005);
-const p1 = new Point(-1, f(-1));
-const p2 = new Point(1, f(1));
+const p1 = new Point(f, canvas, -1, f(-1));
+const p2 = new Point(f, canvas, 1, f(1));
 let count = 0;
 
 export const linearClasifierModule = () => {
@@ -51,8 +51,8 @@ export const linearClasifierModule = () => {
     const inputs = [training.x, training.y, BIAS];
     const target = training.label;
     brain.train(inputs, target);
-    const p3 = new Point(-1, brain.guessY(-1));
-    const p4 = new Point(1, brain.guessY(1));
+    const p3 = new Point(f, canvas, -1, brain.guessY(-1));
+    const p4 = new Point(f, canvas, 1, brain.guessY(1));
     canvas.drawLine(
       { x: p3.pixelX(), y: p3.pixelY() },
       { x: p4.pixelX(), y: p4.pixelY() }
