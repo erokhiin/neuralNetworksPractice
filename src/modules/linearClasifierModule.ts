@@ -1,63 +1,75 @@
+import p5 from "p5";
 import { Perceptron } from "../library/Perceptron";
-import { Canvas } from "../utils/Canvas";
-import { loop } from "../utils/loop";
-import { Point } from "../utils/Point";
+import { random } from "../utils/random";
 
-const WIDTH = 500;
-const HEIGTH = 500;
+let brain: Perceptron
+
+const X_MIN = -1;
+const Y_MIN = -1;
+const X_MAX = 1;
+const Y_MAX = 1;
 const BIAS = 1;
+const LINE_FUNCTION: (x: number) => number = (x) => 0.89 * x + 0.2;
 
-const COLOR_ERROR = "#cf3030";
-const COLOR_SUCCESS = "#2ad55a";
-
-export const canvas = new Canvas(
-  document.querySelector("#perceptron"),
-  WIDTH,
-  HEIGTH
-);
-// Line function
-export const f: (x: number) => number = (x) => 0.89 * x + 0.2;
-const points: Point[] = new Array(200);
-for (let i = 0; i < points.length; i++) {
-  points[i] = new Point(f, canvas);
-}
-const brain = new Perceptron(3, 0.005);
-const p1 = new Point(f, canvas, -1, f(-1));
-const p2 = new Point(f, canvas, 1, f(1));
 let count = 0;
+let training = new Array(2000);
 
-export const linearClasifierModule = () => {
-  loop(() => {
-    canvas.clear();
+const sketch = (p: p5) => {
+  p.setup = () => {
+    p.createCanvas(400, 400)
+    brain = new Perceptron(3, 0.005);
 
-    canvas.drawLine(
-      { x: p1.pixelX(), y: p1.pixelY() },
-      { x: p2.pixelX(), y: p2.pixelY() }
-    );
-    for (let point of points) {
-      point.show();
+    for (let i = 0; i < training.length; i++) {
+      const x = random(-1, 1)
+      const y = random(-1, 1)
+      const answer = y < LINE_FUNCTION(x) ? -1 : 1
+      training[i] = {
+        input: [x, y, BIAS],
+        output: answer
+      }
     }
-    for (let point of points) {
-      const inputs = [point.x, point.y, BIAS];
-      const target = point.label;
-      const guess = brain.guess(inputs);
-      let color: string;
-      if (guess === target) color = COLOR_SUCCESS;
-      else color = COLOR_ERROR;
-      canvas.drawPoint({ x: point.pixelX(), y: point.pixelY() }, color, 3);
-    }
+  }
+  p.draw = () => {
+    p.background(0);
 
-    const training = points[count];
-    const inputs = [training.x, training.y, BIAS];
-    const target = training.label;
-    brain.train(inputs, target);
-    const p3 = new Point(f, canvas, -1, brain.guessY(-1));
-    const p4 = new Point(f, canvas, 1, brain.guessY(1));
-    canvas.drawLine(
-      { x: p3.pixelX(), y: p3.pixelY() },
-      { x: p4.pixelX(), y: p4.pixelY() }
-    );
-    count++;
-    if (count === points.length) count = 0;
-  });
-};
+    p.strokeWeight(1);
+    p.stroke(255);
+    let x1 = p.map(X_MIN, X_MIN, X_MAX, 0, p.width);
+    let y1 = p.map(LINE_FUNCTION(X_MIN), Y_MIN, Y_MAX, p.height, 0);
+    let x2 = p.map(X_MAX, X_MIN, X_MAX, 0, p.width);
+    let y2 = p.map(LINE_FUNCTION(X_MAX), Y_MIN, Y_MAX, p.height, 0);
+    p.line(x1, y1, x2, y2);
+
+    p.stroke(255);
+    p.strokeWeight(2);
+    x1 = X_MIN;
+    y1 = brain.guessY(x1);
+    x2 = X_MAX;
+    y2 = brain.guessY(x2)
+
+    x1 = p.map(x1, X_MIN, X_MAX, 0, p.width);
+    y1 = p.map(y1, Y_MIN, Y_MAX, p.height, 0);
+    x2 = p.map(x2, X_MIN, X_MAX, 0, p.width);
+    y2 = p.map(y2, Y_MIN, Y_MAX, p.height, 0);
+    p.line(x1, y1, x2, y2);
+
+
+    brain.train(training[count].input, training[count].output);
+    count = (count + 1) % training.length;
+
+    for (let i = 0; i < count; i++) {
+      p.stroke(255);
+      p.strokeWeight(1);
+      p.fill(255);
+      let guess = brain.guess(training[i].input);
+      if (guess > 0) p.noFill();
+
+      let x = p.map(training[i].input[0], X_MIN, X_MAX, 0, p.width);
+      let y = p.map(training[i].input[1], Y_MIN, Y_MAX, p.height, 0);
+      p.ellipse(x, y, 8, 8);
+      p.fill(255);
+    }
+  }
+}
+
+export const linearClasifierModule = (node: HTMLElement) => new p5(sketch, node)
