@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "s": "parcel src/index.html",
+    "b": "parcel build src/index.html --out-dir docs --public-url ./"
+  },
+  "devDependencies": {
+    "@types/p5": "^0.9.1",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "p5": "^1.2.0"
+  }
+}
